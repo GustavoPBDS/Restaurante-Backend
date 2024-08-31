@@ -33,7 +33,7 @@ module.exports = class User{
     static async createAdmin (){
         try {
             const name = 'admin',
-                email = 'admin',
+                email = 'admin@admin.com',
                 password = 'admin',
                 profileImg = 'admin',
                 uid = createUUID()
@@ -70,6 +70,19 @@ module.exports = class User{
             return await bcryptFuncions.compareHash(password, hash)
         } catch (err) {
             throw {code:400, message:'Senha incorreta'}
+        }
+    }
+    static async verifyUserObject(userObject){
+        try {
+            if( userObject.name ) await this.verifyName(userObject.name)
+            if( userObject.email ) {
+                await this.verifyEmail(userObject.email)
+                const user = await this.getUserByEmailPrivate(userObject.email)
+                if (user) throw {code:409, message:"Ja existe alguem com esse email"}
+            }
+            return true
+        } catch (err) {
+            throw err
         }
     }
 
@@ -110,9 +123,18 @@ module.exports = class User{
     }
     static async getUserByEmailPrivate(email){
         try {
-            const res =  await userRepositorie.getUserByEmailPrivate(email)
+            const res = await userRepositorie.getUserByEmailPrivate(email)
             if (!res) return null
             return res 
+        } catch (err) {
+            throw err
+        }
+    }
+    //DELETE
+    static async deleteUser(uid){
+        try {
+            const res = await userRepositorie.deleteUser(uid)  
+            return res
         } catch (err) {
             throw err
         }

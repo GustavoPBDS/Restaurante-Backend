@@ -16,6 +16,17 @@ module.exports = new class userRepositorie{
             throw {code:500, message: err.sqlMessage}
         }
     }
+    async update (userObject){
+        try {
+            return await this.db.transaction(async trx=>{
+                const userModel = trx('user')
+                await userModel.where({'uid':userObject.uid}).update(userObject)
+                return
+            })
+        } catch (err) {
+            throw {code:500, message: err.sqlMessage}
+        }
+    }
     async getAdmin (){
         try {
             return await this.db.transaction(async trx=>{
@@ -64,6 +75,16 @@ module.exports = new class userRepositorie{
             return await this.db.transaction(async trx=>{
                 const userModel = trx('user')
                 return await userModel.select().where('email', email).first()
+            })
+        } catch (err) {
+            throw {code:500, message: err.sqlMessage}
+        }
+    }
+    async deleteUser(uid){
+        try {
+            return await this.db.transaction(async trx=>{
+                const userModel = trx('user')
+                return await userModel.delete().where('uid', uid)
             })
         } catch (err) {
             throw {code:500, message: err.sqlMessage}
