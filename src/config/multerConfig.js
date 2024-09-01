@@ -1,7 +1,7 @@
 const multer = require('multer')
 
-const userStorage = multer.memoryStorage()
+const memoryStorage = multer.memoryStorage()
 
 module.exports = {
-    userStorage
+    memoryStorage
 }

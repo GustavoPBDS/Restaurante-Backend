@@ -35,7 +35,7 @@ module.exports = new class{
     async register(req, res){
         try {
             const user = JSON.parse(req.body.user)
-            
+
             if (!user) throw {code:400, message:'Requisição inválida'}
             if (!user.name || !user.email || !user.password) throw {code:400, message:'Preencha todos os campos'}
             
@@ -175,16 +175,12 @@ module.exports = new class{
             await userService.verifyUserObject(userEdit)
 
             let profileImg = userAuth.profileImg,
-                filename, filePath
+                filename, filePath, previusPath
 
-            console.log(userAuth)
             if (req.file) {
                 filename = `${Date.now()}_${req.file.originalname}`
                 filePath = path.join('public/userImages', filename)
-                if (profileImg !== "default") {
-                    const previusPath = getImagePath(profileImg)
-                    await deleteFileImage(previusPath)
-                }
+                previusPath = getImagePath(profileImg)
                 profileImg = `http://localhost:${port}/${filePath}`
             }
             userEdit = {...userEdit, profileImg}
@@ -195,7 +191,10 @@ module.exports = new class{
             await userRepositorie.update(User)
             const token = await createToken(User)
 
-            if (req.file) createFileImage(filePath, req.file.buffer)
+            if (req.file) {
+                if (profileImg !== "default") await deleteFileImage(previusPath)
+                createFileImage(filePath, req.file.buffer)
+            }
 
             res.status(201).send({token})
         } catch (err) {

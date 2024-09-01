@@ -1,15 +1,15 @@
 const multer = require('multer'),
-    {userStorage} = require('../config/multerConfig')
+    {memoryStorage} = require('../config/multerConfig')
 
 const multerMiddleware = new class multerMiddleware{
-    uploadProfileImage = multer({
-        storage:userStorage,
-        limits:{fileSize: 11 * 1024 * 1024},
+    uploadImage = multer({
+        storage:memoryStorage,
+        limits:{fileSize: 30 * 1024 * 1024},
         fileFilter: (req, file, cb)=>{
             if(!file.mimetype.match(/image\/*/)) return cb(null, false)
             return cb(null, true)
         }
-    }).single('profileImg')
+    }).single('image')
 }
 
 module.exports = multerMiddleware
