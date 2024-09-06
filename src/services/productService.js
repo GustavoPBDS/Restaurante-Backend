@@ -1,6 +1,7 @@
 const productRepositorie = require('../repositories/productRepositorie'),
     stringsValidations = require('../utils/stringsValidations'),
-    createUUID = require('../utils/createId')
+    createUUID = require('../utils/createId'),
+    numberValidations = require('../utils/numbersValidations')
 
 const {escape} = require('validator')
 
@@ -50,22 +51,12 @@ module.exports = class Product{
             throw {code:400, message:'Descrição muito longa'}
         }
     }
-    static async verifyPrice (price){
-        try {
-            if (isNaN(price)) throw {code:400, message: 'Insira um número'}
-            if (price < 0) throw {code: 400, message: 'Preço inválido'}
-            if (price > 1000000) throw {code:400, message: 'Ninguem vai comprar esse produto'}
-            return true
-        } catch (err) {
-            throw err
-        }
-    }
     static async verifyProductObject(productObject){
         try {
             if( productObject.name ) await this.verifyName(productObject.name)
             if (productObject.description) await this.verifyDescription(productObject.description)
             if (productObject.category) await stringsValidations.notBlank(productObject.category)
-            if (productObject.price) await this.verifyPrice(productObject.price)
+            if (productObject.price) await numberValidations.verifyPrice(productObject.price)
             return true
         } catch (err) {
             throw err
