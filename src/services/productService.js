@@ -36,6 +36,13 @@ module.exports = class Product{
             throw err
         }
     }
+    static async updateRating(pid, rating){
+        try {
+            return await productRepositorie.updateRating(pid, rating)
+        } catch (err) {
+            throw err
+        }
+    }
 
     static async verifyName (name){
         try {

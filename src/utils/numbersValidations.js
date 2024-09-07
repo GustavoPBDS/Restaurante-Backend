@@ -9,6 +9,15 @@ const numberValidations = class numberValidations{
             throw err
         }
     }
+    static async verifyRating (rating){
+        try {
+            if (isNaN(rating)) throw {code:400, message: 'Insira um número'}
+            if (rating < 0 || rating > 5) throw {code: 400, message: 'Feedback inválido'}
+            return true
+        } catch (err) {
+            throw err
+        }
+    }
 }
 
 module.exports = numberValidations

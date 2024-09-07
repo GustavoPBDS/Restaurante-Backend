@@ -27,6 +27,18 @@ module.exports = new class productRepositories{
             throw {code:500, message: err.sqlMessage}
         }
     }
+    async updateRating(pid, rating){
+        try {
+            return await this.db.transaction(async trx=>{
+                const productModel = trx('product')
+                await productModel.where({pid}).update({rating})
+                return
+            })
+        } catch (err) {
+            console.log(err)
+            throw {code:500, message: err.sqlMessage}
+        }
+    }
     async deleteProduct(pid){
         try {
             return await this.db.transaction(async trx=>{

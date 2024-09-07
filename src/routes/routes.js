@@ -7,6 +7,7 @@ const userController = require('../controllers/userController')
 const productController = require('../controllers/productController')
 const orderController = require('../controllers/orderController')
 const orderItemController = require('../controllers/orderItemController')
+const commentController = require('../controllers/commentController')
 
 router.get('/', (req, res)=>{
     res.send('Hello World!')
@@ -37,6 +38,15 @@ router.post('/product', authAdmin, uploadImage, productController.create)
 router.put('/product/:pid', authAdmin, uploadImage, productController.update)
 
 router.delete('/product/:pid', authAdmin, productController.remove)
+
+// comment routes
+router.get('/comments/:pid', commentController.comments)
+
+router.post('/comment/:pid', auth, commentController.create)
+
+router.put('/comment/:pid/:cid', auth, commentController.update)
+
+router.delete('/comment/:pid/:cid', auth, commentController.remove)
 
 //order routes
 router.get('/orders', auth, orderController.getAllOrders)

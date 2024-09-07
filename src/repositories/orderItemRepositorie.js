@@ -54,7 +54,6 @@ module.exports = new class orderRepositorie{
         try {
             return await this.db.transaction(async trx=>{
                 const orderItemModel = trx('orderItem')
-                console.log(id)
                 await orderItemModel.delete().where({id})
                 return
             })

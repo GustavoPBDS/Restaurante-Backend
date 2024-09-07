@@ -18,6 +18,7 @@ const commentTable = async () => {
             table.foreign('pid').references('product.pid')
 
             table.bigint('created_at').defaultTo(Date.now())
+            table.bigint('updated_at').nullable()
             table.text('body').notNullable().defaultTo('')
             table.integer('rating').defaultTo(0)
         })
