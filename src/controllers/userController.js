@@ -35,7 +35,7 @@ module.exports = new class{
     async register(req, res){
         try {
             const user = JSON.parse(req.body.user)
-
+            console.log(user)
             if (!user) throw {code:400, message:'Requisição inválida'}
             if (!user.name || !user.email || !user.password) throw {code:400, message:'Preencha todos os campos'}
             

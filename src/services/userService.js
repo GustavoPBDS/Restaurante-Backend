@@ -48,21 +48,21 @@ module.exports = class User{
         try {
             return await stringsValidations.validateName(name)
         } catch (err) {
-            throw {code:400, message:'Nome muito curto'}
+            throw err
         }
     }
     static async verifyEmail(email){
         try {
             return await stringsValidations.validateEmail(email)
         } catch (err) {
-            throw {code:400, message:'Email inválido'}
+            throw err
         }
     }
     static async verifyPassword(password){
         try {
             return await stringsValidations.validatePassword(password)
         } catch (err) {
-            throw {code:400, message:'Senha muito fraca'}
+            throw err
         }
     }
     static async verifyPasswordHash(password, hash){

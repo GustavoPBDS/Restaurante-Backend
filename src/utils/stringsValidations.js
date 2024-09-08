@@ -32,7 +32,7 @@ const stringsValidations = class stringsValidations {
     static async validatePassword(password) {
         try {
             await this.notBlank(password);
-            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&.]{6,}$/;
             if (!password.match(passwordRegex)) throw { code: 400, message: 'A senha deve conter pelo menos 6 caracteres, uma letra maiúscula, uma letra minúscula, um número e um caractere especial' };
             return true;
         } catch (err) {

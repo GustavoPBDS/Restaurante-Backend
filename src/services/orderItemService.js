@@ -2,7 +2,7 @@ const orderItemRepositorie = require('../repositories/orderItemRepositorie'),
     stringsValidations = require('../utils/stringsValidations'),
     numbersValidations = require('../utils/numbersValidations'),
     createUUID = require('../utils/createId')
-
+const productService = require('../services/productService')
 const {escape} = require('validator')
 
 module.exports = class OrderItem{
@@ -36,7 +36,12 @@ module.exports = class OrderItem{
     }
     static async getAllOrderItens(oid){
         try {
-            return await orderItemRepositorie.getAllOrderItens(oid)
+            let itens = await orderItemRepositorie.getAllOrderItens(oid)
+            itens = itens.map(async(item)=>{
+                const product = await productService.getProductById(item.pid)
+                return {...item, productName: product.name, productImg: product.productImage}
+            })
+            return await Promise.all(itens)
         } catch (err) {
             throw err
         }
