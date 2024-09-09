@@ -5,7 +5,13 @@ const {createFileImage, deleteFileImage, getImagePath} = require('../utils/image
 
 const path = require('path')
 const fs = require('fs')
+const stringsValidations = require('../utils/stringsValidations')
+
 const port = process.env.PORT
+const user = process.env.MYEMAIL
+const pass = process.env.EMAILPASSWORD
+
+const nodemailer = require('nodemailer');
 
 module.exports = new class{
     async registerAdmin(req, res){
@@ -202,6 +208,44 @@ module.exports = new class{
             let code = err?.code ?? 500,
                 message = err?.message ?? 'Ocorreu um erro'
             res.status(code).send({message}) 
+        }
+    }
+    async sendEmail(req, res){
+        try {
+            const { name, secondName, email, message } = req.body
+            if(!name || !secondName || !email || !message) throw {code:400, message:'Insira todos os campos'}
+    
+            await stringsValidations.validateEmail(email)
+
+            const transporter = nodemailer.createTransport({
+                service:'gmail',
+                auth:{user, pass}
+            }),
+            mailOptions = {
+                from: email,
+                to: user,
+                subject: `Mensagem de ${name} ${secondName}`,
+                text: `
+                    Nome: ${name} ${secondName}
+                    E-mail: ${email}
+                    Mensagem:
+                    ${message}
+                `
+            }
+
+            transporter.sendMail(mailOptions, (err, info)=>{
+                if(err) {
+                    console.log(err)
+                    throw {code: 500, message:'Erro ao enviar o email'}
+                }
+                return res.status(200).send({sucess:true})
+            })
+    
+        } catch (err) {
+            console.log(err)
+            let code = err?.code ?? 500,
+                message = err?.message ?? 'Ocorreu um erro'
+            res.status(code).send({message})
         }
     }
 }

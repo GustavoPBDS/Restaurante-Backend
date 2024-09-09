@@ -21,6 +21,7 @@ router.get('/users', authAdmin, userController.getUsers)
 router.post('/register', uploadImage, userController.register)
 router.post('/register/admin', userController.registerAdmin)
 router.post('/login', userController.login)
+router.post('/send-email', auth, userController.sendEmail)
 
 router.put('/user/:uid?', auth, uploadImage, userController.update)
 
