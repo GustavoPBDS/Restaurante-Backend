@@ -13,7 +13,7 @@ module.exports = new class{
 
             const comments = await commentService.getAllComments(pid)
 
-            res.status(200).send({comments})
+            res.status(200).send({comments:comments.reverse()})
         } catch (err) {
             console.log(err)
             let code = err?.code ?? 500,

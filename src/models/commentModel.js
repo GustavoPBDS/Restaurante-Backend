@@ -20,7 +20,7 @@ const commentTable = async () => {
             table.bigint('created_at').defaultTo(Date.now())
             table.bigint('updated_at').nullable()
             table.text('body').notNullable().defaultTo('')
-            table.integer('rating').defaultTo(0)
+            table.float('rating').defaultTo(0)
         })
         console.log('Tabela de comentario criada!')
     } catch (err) { 

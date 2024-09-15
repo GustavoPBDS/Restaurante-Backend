@@ -4,6 +4,7 @@ const commentRepositorie = require('../repositories/commentRepositorie'),
     createUUID = require('../utils/createId')
 
 const {escape} = require('validator')
+const userService = require('../services/userService')
 
 module.exports = class Comment{
     constructor(cid, uid, pid, created_at, updated_at, body, rating){
@@ -40,7 +41,12 @@ module.exports = class Comment{
     }
     static async getAllComments(pid){
         try {
-            return await commentRepositorie.getAllComments(pid)
+            let Comments = await commentRepositorie.getAllComments(pid)
+            Comments = Comments.map(async (comment)=>{
+                const user = await userService.getUserById(comment.uid)
+                return {...comment, userImage:user.profileImg, userName:user.name}
+            })
+            return await Promise.all(Comments)
         } catch (err) {
             throw err
         }
