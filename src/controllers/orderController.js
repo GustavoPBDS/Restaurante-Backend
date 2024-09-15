@@ -88,7 +88,7 @@ module.exports = new class{
         try {
             const {user} = req
             const orders = await orderService.getAllOrders(user.uid)
-            orders.sort((a, b)=>{
+            orders.reverse().sort((a, b)=>{
                 if (a.status === 'PENDENTE' && b.status === 'PAGO') return -1;
                 if (a.status === 'PAGO' && b.status === 'PENDENTE') return 1;
                 return 0;

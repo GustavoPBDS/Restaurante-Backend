@@ -1,3 +1,4 @@
+const orderItemRepositorie = require('../repositories/orderItemRepositorie')
 const orderRepositorie = require('../repositories/orderRepositorie'),
     stringsValidations = require('../utils/stringsValidations'),
     numbersValidations = require('../utils/numbersValidations'),
@@ -64,6 +65,7 @@ module.exports = class Order{
     }
     static async deleteOrder(oid){
         try {
+            await orderItemRepositorie.deleteOrderItens(oid)
             return await orderRepositorie.deleteOrder(oid)
         } catch (err) {
             throw err

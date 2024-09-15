@@ -16,7 +16,7 @@ module.exports = new class{
 
             const orders = await orderItemService.getAllOrderItens(oid)
 
-            res.status(200).send({orders})
+            res.status(200).send({itens:orders, order})
 
         } catch (err) {
             console.log(err)
