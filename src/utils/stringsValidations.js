@@ -43,7 +43,7 @@ const stringsValidations = class stringsValidations {
     static async validateDescription(description) {
         try {
             await this.notBlank(description);
-            if (description.length > 60) throw { code: 400, message: 'A descrição deve ter no máximo 60 caracteres' };
+            if (description.length > 200) throw { code: 400, message: 'A descrição deve ter no máximo 60 caracteres' };
             return true;
         } catch (err) {
             throw err;
