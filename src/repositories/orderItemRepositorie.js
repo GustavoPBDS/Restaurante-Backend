@@ -74,6 +74,18 @@ module.exports = new class orderRepositorie{
             throw {code:500, message: err.sqlMessage}
         }
     }
+    async deleteOrderItensFromProduct(pid){
+        try {
+            return await this.db.transaction(async trx=>{
+                const orderItemModel = trx('orderItem')
+                await orderItemModel.delete().where({pid})
+                return
+            })
+        } catch (err) {
+            console.log(err)
+            throw {code:500, message: err.sqlMessage}
+        }
+    }
     async getAllOrderItens(oid){
         try {
             return await this.db.transaction(async trx=>{

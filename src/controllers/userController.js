@@ -139,7 +139,7 @@ module.exports = new class{
 
             const users = await userService.getUsers()
 
-            res.status(200).send({users})
+            res.status(200).send({users:users.reverse()})
         } catch (err) {
             console.log(err)
             let code = err?.code ?? 500,

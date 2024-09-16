@@ -49,6 +49,30 @@ module.exports = new class commentRepositorie{
             throw {code:500, message: err.sqlMessage}
         }
     }
+    async deleteCommentsFromUser(uid){
+        try {
+            return await this.db.transaction(async trx=>{
+                const commentModel = trx('comment')
+                await commentModel.delete().where({uid})
+                return
+            })
+        } catch (err) {
+            console.log(err)
+            throw {code:500, message: err.sqlMessage}
+        }
+    }
+    async deleteCommentsFromProduct(pid){
+        try {
+            return await this.db.transaction(async trx=>{
+                const commentModel = trx('comment')
+                await commentModel.delete().where({pid})
+                return
+            })
+        } catch (err) {
+            console.log(err)
+            throw {code:500, message: err.sqlMessage}
+        }
+    }
     async getAllComments(pid){
         try {
             return await this.db.transaction(async trx=>{

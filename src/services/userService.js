@@ -4,6 +4,8 @@ const userRepositorie = require('../repositories/userRepositorie')
 const createUUID = require('../utils/createId')
 const jwtFunctions = require('../utils/jwtFunctions')
 
+const commentRepositorie = require('../repositories/commentRepositorie')
+const orderRepositorie = require('../repositories/orderRepositorie')
 
 module.exports = class User{
     constructor (uid, name, email, password, profileImg, admin){
@@ -133,6 +135,8 @@ module.exports = class User{
     //DELETE
     static async deleteUser(uid){
         try {
+            await commentRepositorie.deleteCommentsFromUser(uid)
+            await orderRepositorie.deleteCommentsFromUser(uid)
             const res = await userRepositorie.deleteUser(uid)  
             return res
         } catch (err) {

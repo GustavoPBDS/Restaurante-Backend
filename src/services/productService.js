@@ -3,6 +3,9 @@ const productRepositorie = require('../repositories/productRepositorie'),
     createUUID = require('../utils/createId'),
     numberValidations = require('../utils/numbersValidations')
 
+const commentRepositorie = require("../repositories/commentRepositorie")
+const orderItemRepositorie = require('../repositories/orderItemRepositorie')
+
 const {escape} = require('validator')
 
 module.exports = class Product{
@@ -31,7 +34,10 @@ module.exports = class Product{
     }
     static async deleteProduct(pid){
         try {
-            return await productRepositorie.deleteProduct(pid)
+            await commentRepositorie.deleteCommentsFromProduct(pid)
+            await orderItemRepositorie.deleteOrderItensFromProduct(pid)
+            const res = await productRepositorie.deleteProduct(pid)
+            return res
         } catch (err) {
             throw err
         }
